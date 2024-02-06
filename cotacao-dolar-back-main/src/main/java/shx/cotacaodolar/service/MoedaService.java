@@ -8,11 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
@@ -29,7 +25,7 @@ import shx.cotacaodolar.model.Periodo;
 @Service
 public class MoedaService {
 
-	// o formato da data que o método recebe é "MM-dd-yyyy"
+    // o formato da data que o método recebe é "MM-dd-yyyy"
     public List<Moeda> getCotacoesPeriodo(String startDate, String endDate) throws IOException, MalformedURLException, ParseException{
         Periodo periodo = new Periodo(startDate, endDate);
 
@@ -57,7 +53,21 @@ public class MoedaService {
         return moedasLista;
     }
 
-    public Moeda getCotacaoAtual() throws IOException, ParseException{
+    public List<Moeda> getCotacoesMenoresAtual(String startDate, String endDate) throws IOException, MalformedURLException, ParseException{
+        List<Moeda> listaMoedas = getCotacoesPeriodo(startDate,endDate);
+        double cotacaoAtual = getCotacaoAtual();
+
+        for (int i = 0; i < listaMoedas.size(); i++) {
+            Moeda moeda = listaMoedas.get(i);
+            if (moeda.preco > cotacaoAtual) {
+                listaMoedas.remove(i);
+                i--;  // Atualizar o índice após a remoção
+            }
+        }
+        return listaMoedas;
+    }
+
+    public Double getCotacaoAtual() throws IOException, ParseException{
 
         String dataFormatada =  new SimpleDateFormat("MM-dd-yyyy").format(new Date());
 
@@ -88,7 +98,7 @@ public class MoedaService {
             moeda.preco = obj.getAsJsonObject().get("cotacaoCompra").getAsDouble();
         }
 
-        return moeda;
+        return moeda.preco;
     }
 
     private JsonArray getJsonCotaPelaData(String data) throws IOException{

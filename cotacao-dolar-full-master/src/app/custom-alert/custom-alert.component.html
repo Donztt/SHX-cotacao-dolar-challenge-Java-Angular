@@ -1,0 +1,10 @@
+
+<div *ngIf="mostrarAlerta" class="background-alert">
+  <div class="custom-alert" [ngClass]="{'success': success, 'error': !success}">
+    <h3>{{ titulo }}</h3>
+    <p>{{ mensagem }}</p>
+    <div class="text-center">
+      <button class="btn btn-primary" (click)="fecharAlerta.emit()">Fechar</button>
+    </div>
+  </div>
+</div>

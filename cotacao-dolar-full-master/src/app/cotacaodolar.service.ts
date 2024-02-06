@@ -19,4 +19,11 @@ export class CotacaoDolarService {
   ): Observable<Cotacao[]> {
     return this.http.get<Cotacao[]>(`${this.apiServerUrl}/moeda/${dataInicial}&${dataFinal}`);
   }
+
+  public getCotacaoMenoresAtualPorPeriodo(
+    dataInicial: string,
+    dataFinal: string
+  ): Observable<Cotacao[]> {
+    return this.http.get<Cotacao[]>(`${this.apiServerUrl}/moeda/cotacoesMenoresAtual/${dataInicial}&${dataFinal}`);
+  }
 }

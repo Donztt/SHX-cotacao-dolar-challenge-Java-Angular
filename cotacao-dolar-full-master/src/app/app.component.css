@@ -1,51 +1,69 @@
 /* Header */
 .header {
-    text-align: center;
+  text-align: center;
+  background-color: #56A1F0;
+  margin-left: 30%;
+  margin-right: 30%;
+  border-radius: 25px;
 }
 
 .header h1 {
-    font-size: 50px;
+  padding: 20px;
+  font-size: 3em;
 }
-
 
 /* Dolar atual */
 .dolarAtual {
-    text-align: center;
+  text-align: center;
 }
 
 /* Buscar por periodo */
 .buscarPorPeriodo {
-    text-align: center;
-    background-color: aliceblue;
+  text-align: center;
+  background-color: aliceblue;
 }
 
-.buscarPorPeriodo label, button {
-    margin-left: 20px;
-}
-
-/* Alerta de erro */
-.errorAlert{
-    text-align: center;
-    color: red;
+.buscarPorPeriodo label,
+button {
+  margin-left: 20px;
 }
 
 /* Lista do histórico de cotações */
 ul {
-    margin-left: 20%;
-    margin-right: 20%;
-    list-style-type: none;
-    padding: 0;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0;
+  list-style-type: none;
 }
 
 li {
-    background-color: beige;
-    margin-bottom: 5px;
-    padding: 5px;
-    border-radius: 25px;
+  background-color: #56A1F0;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 25px;
 }
 
-li span {
-    font-size: 20px;
-    margin-right: 10%;
-    margin-left: 5%;
+.listaHistoricoCotacoesItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.historicoDeCotacoesItemInfo {
+  text-align: center;
+  width: 33%;
+  font-size: 20px;
+}
+
+.cabecalho {
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.cabecalho-text {
+  text-align: center;
+  width: 33%;
 }
