@@ -59,7 +59,7 @@ public class MoedaService {
 
         for (int i = 0; i < listaMoedas.size(); i++) {
             Moeda moeda = listaMoedas.get(i);
-            if (moeda.preco > cotacaoAtual) {
+            if (moeda.preco >= cotacaoAtual) {
                 listaMoedas.remove(i);
                 i--;  // Atualizar o índice após a remoção
             }

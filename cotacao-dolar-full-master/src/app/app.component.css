@@ -1,15 +1,16 @@
 /* Header */
 .header {
   text-align: center;
-  background-color: #56A1F0;
-  margin-left: 30%;
-  margin-right: 30%;
+  background-color: #3F51B5;
+  margin-left: 25%;
+  margin-right: 25%;
   border-radius: 25px;
 }
 
 .header h1 {
   padding: 20px;
   font-size: 3em;
+  color: white;
 }
 
 /* Dolar atual */
@@ -19,8 +20,10 @@
 
 /* Buscar por periodo */
 .buscarPorPeriodo {
+  margin-top: 0;
   text-align: center;
-  background-color: aliceblue;
+  background-color: #CFE8EE;
+  box-shadow: 0px 4px 10px rgba(43, 43, 43, 0.5);
 }
 
 .buscarPorPeriodo label,
@@ -37,10 +40,11 @@ ul {
 }
 
 li {
-  background-color: #56A1F0;
-  margin-bottom: 5px;
+  background-color: #CFE8EE;
+  margin-top: 5px;
   padding: 5px;
-  border-radius: 25px;
+  border-radius: 10px;
+
 }
 
 .listaHistoricoCotacoesItem {
@@ -61,9 +65,18 @@ li {
   display: flex;
   margin-left: 5%;
   margin-right: 5%;
+  height: 40px;
+  background-color: #CFE8EE;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
 
 .cabecalho-text {
   text-align: center;
   width: 33%;
+  padding: 10px;
+}
+
+.btnPesquisar{
+  width: 20%;
 }

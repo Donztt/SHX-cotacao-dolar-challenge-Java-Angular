@@ -16,22 +16,25 @@ import {
   animations: [
     trigger(
       'fadeAnimation', [
-        transition(':enter', [
+        transition('void => *', [
           style({
+              transform: 'translateY(-10px)',
               opacity: 0
             }
           ),
           animate(
             500,
             style({
+              transform: 'translateY(0px)',
               opacity: 1,
             })
           )
         ]),
-        transition(':leave', [
+        transition('* => void',[
           animate(
             500,
             style({
+              transform: 'translateY(-10px)',
               opacity: 0
             })
           )
