@@ -17,19 +17,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import shx.cotacaodolar.DTO.FiltroDTO;
 import shx.cotacaodolar.model.Moeda;
 import shx.cotacaodolar.model.Periodo;
-
-
 
 @Service
 public class MoedaService {
 
     // o formato da data que o método recebe é "MM-dd-yyyy"
-    public List<Moeda> getCotacoesPeriodo(String startDate, String endDate) throws IOException, MalformedURLException, ParseException{
+    public List<Moeda> getCotacoesPeriodo(String startDate, String endDate,String currencyCode) throws IOException, MalformedURLException, ParseException{
         Periodo periodo = new Periodo(startDate, endDate);
 
-        String urlString = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?%40dataInicial='" + periodo.getDataInicial() + "'&%40dataFinalCotacao='" + periodo.getDataFinal() + "'&%24format=json&%24skip=0&%24top=" + periodo.getDiasEntreAsDatasMaisUm();
+        String urlString = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaPeriodo(moeda=@moeda,dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@moeda='"+ currencyCode +"'&@dataInicial='" + periodo.getDataInicial() + "'&@dataFinalCotacao='" + periodo.getDataFinal() + "'&$format=json&$select=cotacaoCompra,dataHoraCotacao";
 
         URL url = new URL(urlString);
         HttpURLConnection request = (HttpURLConnection)url.openConnection();
@@ -53,9 +52,9 @@ public class MoedaService {
         return moedasLista;
     }
 
-    public List<Moeda> getCotacoesMenoresAtual(String startDate, String endDate) throws IOException, MalformedURLException, ParseException{
-        List<Moeda> listaMoedas = getCotacoesPeriodo(startDate,endDate);
-        double cotacaoAtual = getCotacaoAtual();
+    public List<Moeda> getCotacoesMenoresAtual(String startDate, String endDate, String currencyCode) throws IOException, MalformedURLException, ParseException{
+        List<Moeda> listaMoedas = getCotacoesPeriodo(startDate,endDate,currencyCode);
+        double cotacaoAtual = getCotacaoAtual(currencyCode);
 
         for (int i = 0; i < listaMoedas.size(); i++) {
             Moeda moeda = listaMoedas.get(i);
@@ -67,11 +66,11 @@ public class MoedaService {
         return listaMoedas;
     }
 
-    public Double getCotacaoAtual() throws IOException, ParseException{
+    public Double getCotacaoAtual(String currencyCode) throws IOException, ParseException{
 
         String dataFormatada =  new SimpleDateFormat("MM-dd-yyyy").format(new Date());
 
-        JsonArray cotacoesArray = getJsonCotaPelaData(dataFormatada);
+        JsonArray cotacoesArray = getJsonCotaPelaData(dataFormatada, currencyCode);
 
         if (cotacoesArray.isEmpty()){
             //caso não encontre valor para o dia atual, o sistema irá buscar a cotação do dia anterior
@@ -84,7 +83,7 @@ public class MoedaService {
 
             String dataDiaAnteriorFormatada =  new SimpleDateFormat("MM-dd-yyyy").format(diaAnterior);
 
-            cotacoesArray = getJsonCotaPelaData(dataDiaAnteriorFormatada);
+            cotacoesArray = getJsonCotaPelaData(dataDiaAnteriorFormatada, currencyCode);
         }
 
         Moeda moeda = new Moeda();
@@ -101,8 +100,8 @@ public class MoedaService {
         return moeda.preco;
     }
 
-    private JsonArray getJsonCotaPelaData(String data) throws IOException{
-        String urlString = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='"+ data +"'&$top=100&$format=json";
+    private JsonArray getJsonCotaPelaData(String data, String currencyCode) throws IOException{
+        String urlString = "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda='"+ currencyCode +"'&@dataCotacao='"+ data +"'&$top=100&$format=json";
 
         URL url = new URL(urlString);
         HttpURLConnection request = (HttpURLConnection)url.openConnection();

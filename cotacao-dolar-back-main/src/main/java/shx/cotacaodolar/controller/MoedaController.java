@@ -23,22 +23,17 @@ public class MoedaController {
     @Autowired
     private MoedaService moedaService;
 
-    @GetMapping("/moeda/{data1}&{data2}")
-    public List<Moeda> getCotacoesPeriodo(@PathVariable("data1") String startDate, @PathVariable("data2") String endDate) throws IOException, MalformedURLException, ParseException{
-        return moedaService.getCotacoesPeriodo(startDate, endDate);
+    @GetMapping("/moeda/{data1}&{data2}&{currencyCode}")
+    public List<Moeda> getCotacoesPeriodo(@PathVariable("data1") String startDate, @PathVariable("data2") String endDate, @PathVariable("currencyCode") String currencyCode) throws IOException, MalformedURLException, ParseException{
+        return moedaService.getCotacoesPeriodo(startDate, endDate,currencyCode);
     }
-    
-    // Desenvolver uma rotina que retorna a cotação atual
-    @GetMapping("/moeda/atual")
-    public Double getCotacaoAtual() throws IOException, MalformedURLException, ParseException{
-         return moedaService.getCotacaoAtual();
+    @GetMapping("/moeda/atual/{currencyCode}")
+    public Double getCotacaoAtual(@PathVariable("currencyCode") String currencyCode) throws IOException, MalformedURLException, ParseException{
+         return moedaService.getCotacaoAtual(currencyCode);
     }
-    
-    // Desenvolver uma rotina que recebe um período e retorna uma lista de cotações, somente com as cotações menores que a cotação atual.
-
-    @GetMapping("/moeda/cotacoesMenoresAtual/{data1}&{data2}")
-    public List<Moeda> getCotacoesMenoresAtual(@PathVariable("data1") String startDate, @PathVariable("data2") String endDate) throws IOException, MalformedURLException, ParseException{
-        return moedaService.getCotacoesMenoresAtual(startDate, endDate);
+    @GetMapping("/moeda/cotacoesMenoresAtual/{data1}&{data2}&{currencyCode}")
+    public List<Moeda> getCotacoesMenoresAtual(@PathVariable("data1") String startDate, @PathVariable("data2") String endDate, @PathVariable("currencyCode") String currencyCode) throws IOException, MalformedURLException, ParseException{
+        return moedaService.getCotacoesMenoresAtual(startDate, endDate,currencyCode);
     }
 
 }
