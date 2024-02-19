@@ -45,9 +45,8 @@ export class AppComponent implements OnInit {
   cotacaoAtual = 0;
   cotacaoPorPeriodoLista: Cotacao[] = [];
   switchValue: boolean = false;
-  mostrarAlertaDatasEmBranco: boolean = false;
-  mostrarAlertaDataInicialMaior: boolean = false;
-  mostrarAlertaDataMaiorAtual: boolean = false;
+  AlertaMensagem: string = '';
+  mostrarAlerta: boolean = false;
 
   currencies: Moeda[] = [
     { name: 'Dólar Americano', code: 'USD' },
@@ -90,25 +89,25 @@ export class AppComponent implements OnInit {
     if (dataInicial && dataFinal) {
       this.verificarDatasValidas(dataInicial, dataFinal);
     } else {
-      this.mostrarAlertaDatasEmBranco = true;
+      this.mostrarCaixaAlerta('Ambas as datas devem ser preenchidas!');
     }
   }
 
-  public getCotacaoAtual(): void {
+  getCotacaoAtual(): void {
     this.cotacaoDolarService.getCotacaoAtual(this.selectedCurrency.code).subscribe((cotacao) => {
       this.cotacaoAtual = cotacao;
     });
   }
 
-  public verificarDatasValidas(dataInicial: string, dataFinal: string): void {
+  verificarDatasValidas(dataInicial: string, dataFinal: string): void {
     var data1 = new Date(dataInicial);
     var data2 = new Date(dataFinal);
     var dataAtual = new Date();
 
     if (dataAtual < data1 || dataAtual < data2) {
-      this.mostrarAlertaDataMaiorAtual = true;
+      this.mostrarCaixaAlerta('Nenhuma das Datas podem ser maiores que a data atual!');
     } else if (data1 > data2) {
-      this.mostrarAlertaDataInicialMaior = true;
+      this.mostrarCaixaAlerta('A data inicial deve ser igual ou anterior a data final!');
     } else if (data1 <= data2) {
       if (this.switchValue) {
         this.cotacaoDolarService
@@ -134,14 +133,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-  public calcularDiferenca(valor1: number, valor2: number): number {
+  calcularDiferenca(valor1: number, valor2: number): number {
     const diferenca = valor1 - valor2;
     const diferencaArredondada = parseFloat(diferenca.toFixed(3)); // Arredonda para três casas decimais
 
     return diferencaArredondada;
   }
 
-  public formatarDataParaString(data: Date): string {
+  formatarDataParaString(data: Date): string {
     const ano = data.getFullYear();
     const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // acrescenta 1 pois getMounth inicia com 0;
     const dia = data.getDate().toString().padStart(2, '0');
@@ -149,19 +148,12 @@ export class AppComponent implements OnInit {
     return `${ano}-${mes}-${dia}`;
   }
 
+  mostrarCaixaAlerta(texto: string): void{
+    this.AlertaMensagem = texto;
+    this.mostrarAlerta = true;
+  }
+
   ngOnInit() {
     this.pesquisar();
-  }
-
-  fecharAlertaDatasEmBranco() {
-    this.mostrarAlertaDatasEmBranco = false;
-  }
-
-  fecharAlertaDataInicialMaior() {
-    this.mostrarAlertaDataInicialMaior = false;
-  }
-
-  fecharAlertaDataMaiorAtual() {
-    this.mostrarAlertaDataMaiorAtual = false;
   }
 }
